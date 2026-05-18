@@ -49,7 +49,7 @@ Interested for your team? **Inquiries via [ashgaikwad.com](https://ashgaikwad.co
 
 - **[Product Engineering Accelerator](https://ashgaikwad.com/)** — cohorts & inquiries
 - **[Writing (Substack)](https://ashgaikwad.substack.com/)**
-- **[LinkedIn](https://www.linkedin.com/in/ash-gaikwad-b66106/)**
+- **[LinkedIn](https://www.linkedin.com/in/ashgkwd/)**
 
 ## Philosophy
 
