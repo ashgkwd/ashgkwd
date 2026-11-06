@@ -1,3 +1,5 @@
+<img src="./assets/ash-banner.svg" alt="A friendly green agent floating along a guardrail with three checkpoints: verify, control and operate." width="100%">
+
 ### Hi, I'm Ash.
 
 I help engineering teams use AI to ship faster without losing control of quality or cost.
