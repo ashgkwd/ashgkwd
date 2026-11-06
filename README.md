@@ -1,4 +1,7 @@
-<img src="./assets/ash-banner.svg" alt="A friendly green agent floating along a guardrail with three checkpoints: verify, control and operate." width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/ash-banner-dark.svg">
+  <img src="./assets/ash-banner-light.svg" alt="How I ship with AI agents: agents write the code, every change passes a verify gate (tests, evals, human review) and a control meter with a spend cap, then goes to operate (handoffs, metrics, scale). One change fails the gate and is sent back to the agents." width="100%">
+</picture>
 
 ### Hi, I'm Ash.
 

@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="1200" height="360" role="img" aria-labelledby="t d">
+  <title id="t">How Ash ships with AI agents: agents write the code, checks gate every change, a person decides where it matters</title>
+  <desc id="d">A pipeline diagram. Changes leave a stack of agents, pass a verify gate (tests, evals, human review), a control meter with a spend cap, and arrive at operate (handoffs, metrics, scale). One change fails the gate and is sent back to the agents.</desc>
+  <style>
+    /* palette: dark */
+    svg { --bg1: #1c4b69; --bg2: #22577a; --bg3: #24677e; --ink: #c7f9cc; --muted: #8dc0af; --line: #467b8c; --surface: #2b6486; --pass: #80ed99; }
+    /* palette: end */
+    .serif { font-family: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif; }
+    .mono { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
+    .sans { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif; }
+    .ink { fill: var(--ink); } .muted { fill: var(--muted); } .pass { fill: var(--pass); }
+    .eyebrow { font-size: 13px; letter-spacing: 2.4px; text-transform: uppercase; }
+    .head { font-size: 30px; font-weight: 500; letter-spacing: -0.2px; }
+    .name { font-size: 13px; letter-spacing: 1.8px; text-transform: uppercase; font-weight: 500; }
+    .sub { font-size: 13px; }
+    .tiny { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* one 8s cycle: a change leaves every 2s, the fourth one fails the gate */
+    .dot { animation: pass 8s linear infinite backwards; }
+    .d1 { animation-delay: 0s; transform: translate(120px, 0); }
+    .d2 { animation-delay: 2s; transform: translate(420px, 0); }
+    .d3 { animation-delay: 4s; transform: translate(700px, 0); }
+    .df { animation: fail 8s linear infinite backwards; animation-delay: 6s; transform: translate(60px, 44px); }
+    .df circle { animation: failfill 8s linear infinite backwards; animation-delay: 6s; fill: var(--bg2); }
+    .emit { animation: emit 2s ease-out infinite backwards; }
+    .caret { animation: caret 1.1s steps(1) infinite backwards; }
+    .tick, .cross { transform-box: fill-box; transform-origin: center; }
+    .tick { animation: tick 8s linear infinite backwards; animation-delay: 1.69s; }
+    .cross { animation: cross 8s linear infinite backwards; animation-delay: 1.69s; opacity: 0; }
+    .bar { animation: gate 8s linear infinite backwards; animation-delay: 1.69s; }
+    .meter { animation: meter 8s ease-out infinite backwards; animation-delay: 3.49s; transform-box: fill-box; transform-origin: left center; transform: scaleX(.6); }
+    .ring { animation: ring 8s ease-out infinite backwards; animation-delay: 5.36s; transform-box: fill-box; transform-origin: center; opacity: 0; }
+    .live { animation: live 2s ease-in-out infinite backwards; }
+    .uptime rect:last-child { animation: newest 8s ease-out infinite backwards; animation-delay: 5.36s; }
+
+    @keyframes pass {
+      0% { transform: translate(0, 0); opacity: 0; }
+      3% { opacity: 1; }
+      67% { transform: translate(804px, 0); opacity: 1; }
+      70%, 100% { transform: translate(804px, 0); opacity: 0; }
+    }
+    @keyframes fail {
+      0% { transform: translate(0, 0); opacity: 0; }
+      3% { opacity: 1; }
+      21.2% { transform: translate(254px, 0); }
+      24% { transform: translate(254px, 44px); }
+      44% { transform: translate(-26px, 44px); opacity: 1; }
+      47%, 100% { transform: translate(-26px, 12px); opacity: 0; }
+    }
+    @keyframes failfill { 0%, 21.5% { fill: var(--pass); } 23%, 100% { fill: var(--bg2); } }
+    @keyframes emit { 0% { opacity: .9; } 60%, 100% { opacity: .25; } }
+    @keyframes caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    @keyframes tick {
+      0%, 25%, 50% { opacity: 0; transform: scale(.6); }
+      2%, 27%, 52% { opacity: 1; transform: scale(1.15); }
+      5%, 30%, 55% { opacity: 1; transform: scale(1); }
+      15%, 40%, 65% { opacity: 1; transform: scale(1); }
+      19%, 44%, 69%, 100% { opacity: 0; transform: scale(.6); }
+    }
+    @keyframes cross {
+      0%, 75% { opacity: 0; transform: scale(.6); }
+      77% { opacity: 1; transform: scale(1.15); }
+      80%, 92% { opacity: 1; transform: scale(1); }
+      96%, 100% { opacity: 0; transform: scale(.6); }
+    }
+    @keyframes gate {
+      0%, 25%, 50% { fill: var(--ink); }
+      2%, 15%, 27%, 40%, 52%, 65% { fill: var(--pass); }
+      19%, 44%, 69%, 100% { fill: var(--ink); }
+    }
+    @keyframes meter {
+      0% { transform: scaleX(0); } 2% { transform: scaleX(.6); } 20%, 25% { transform: scaleX(0); }
+      27% { transform: scaleX(.72); } 45%, 50% { transform: scaleX(0); }
+      52% { transform: scaleX(.5); } 70%, 100% { transform: scaleX(0); }
+    }
+    @keyframes ring {
+      0%, 25%, 50% { opacity: .7; transform: scale(1); }
+      14%, 39%, 64% { opacity: 0; transform: scale(2.6); }
+      15%, 24%, 40%, 49%, 65%, 100% { opacity: 0; transform: scale(1); }
+    }
+    @keyframes live { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    @keyframes newest { 0%, 25%, 50% { opacity: .25; } 4%, 29%, 54% { opacity: 1; } 24%, 49%, 74%, 100% { opacity: .25; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="var(--bg1)" /><stop offset=".6" stop-color="var(--bg2)" /><stop offset="1" stop-color="var(--bg3)" />
+    </linearGradient>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="14" cy="14" r="1" fill="var(--ink)" opacity=".1" /></pattern>
+    <clipPath id="card"><rect width="1200" height="360" rx="20" /></clipPath>
+    <radialGradient id="glow"><stop offset="0" stop-color="var(--pass)" stop-opacity=".55" /><stop offset="1" stop-color="var(--pass)" stop-opacity="0" /></radialGradient>
+  </defs>
+
+  <g clip-path="url(#card)">
+    <rect width="1200" height="360" fill="url(#bg)" />
+    <rect width="1200" height="360" fill="url(#grid)" />
+    <circle cx="980" cy="228" r="170" fill="url(#glow)" opacity=".28" />
+  </g>
+  <rect x=".5" y=".5" width="1199" height="359" rx="20" fill="none" stroke="var(--ink)" stroke-opacity=".12" />
+
+  <!-- words -->
+  <text class="mono eyebrow muted" x="56" y="60">How I ship with AI agents</text>
+  <text class="mono tiny muted" x="1144" y="60" text-anchor="end">ashgaikwad.com</text>
+  <text class="serif head ink" x="56" y="106">Agents write the code. Checks gate every change.</text>
+  <text class="serif head ink" x="56" y="144">A person decides where it matters.</text>
+
+  <!-- rail and the return lane -->
+  <line x1="178" y1="228" x2="980" y2="228" stroke="var(--line)" stroke-width="2" />
+  <path d="M430 240 V272 H150 V246" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="3 5" stroke-linejoin="round" />
+  <path d="M145 251 L150 244 L155 251" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <text class="mono tiny muted" x="290" y="265" text-anchor="middle">sent back</text>
+
+  <!-- agents: a stack of three, the front one is typing -->
+  <g>
+    <rect x="98" y="214" width="62" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" />
+    <rect x="106" y="206" width="62" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" />
+    <rect x="114" y="198" width="62" height="36" rx="8" fill="var(--surface)" stroke="var(--ink)" stroke-opacity=".5" />
+    <text class="mono ink" x="126" y="221" font-size="13">›</text>
+    <rect class="caret ink" x="136" y="211" width="7" height="12" rx="1" />
+    <rect class="emit" x="114" y="198" width="62" height="36" rx="8" fill="none" stroke="var(--pass)" stroke-width="1.5" />
+  </g>
+
+  <!-- verify: a gate with its verdict above -->
+  <rect class="bar" x="418" y="204" width="4" height="48" rx="2" fill="var(--ink)" />
+  <rect class="bar" x="442" y="204" width="4" height="48" rx="2" fill="var(--ink)" />
+  <g transform="translate(430 184)">
+    <g class="tick"><circle r="11" fill="var(--pass)" /><path d="M-5 0.5 L-1.5 4 L5.5 -4" fill="none" stroke="var(--bg2)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></g>
+    <g class="cross"><circle r="11" fill="none" stroke="var(--ink)" stroke-width="1.5" /><path d="M-4 -4 L4 4 M4 -4 L-4 4" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" /></g>
+  </g>
+
+  <!-- control: each change's spend, measured against a cap -->
+  <g>
+    <rect x="630" y="223" width="140" height="10" rx="5" fill="var(--line)" fill-opacity=".45" />
+    <rect class="meter" x="630" y="223" width="140" height="10" rx="5" fill="var(--pass)" />
+    <line x1="742" y1="214" x2="742" y2="242" stroke="var(--ink)" stroke-width="2" />
+    <text class="mono tiny muted" x="742" y="206" text-anchor="middle">cap</text>
+  </g>
+
+  <!-- operate: an uptime strip and the live end of the line -->
+  <g class="uptime" fill="var(--pass)">
+    <rect x="904" y="190" width="5" height="16" rx="1.5" opacity=".55" /><rect x="912" y="190" width="5" height="16" rx="1.5" opacity=".55" /><rect x="920" y="190" width="5" height="16" rx="1.5" opacity=".55" />
+    <rect x="928" y="190" width="5" height="16" rx="1.5" opacity=".55" /><rect x="936" y="190" width="5" height="16" rx="1.5" opacity=".3" /><rect x="944" y="190" width="5" height="16" rx="1.5" opacity=".55" />
+    <rect x="952" y="190" width="5" height="16" rx="1.5" opacity=".55" /><rect x="960" y="190" width="5" height="16" rx="1.5" opacity=".55" /><rect x="968" y="190" width="5" height="16" rx="1.5" opacity=".55" />
+    <rect x="976" y="190" width="5" height="16" rx="1.5" opacity=".55" /><rect x="984" y="190" width="5" height="16" rx="1.5" opacity=".55" /><rect x="992" y="190" width="5" height="16" rx="1.5" opacity=".55" />
+    <rect x="1000" y="190" width="5" height="16" rx="1.5" opacity=".55" /><rect x="1008" y="190" width="5" height="16" rx="1.5" opacity=".55" /><rect x="1016" y="190" width="5" height="16" rx="1.5" opacity=".55" /><rect x="1024" y="190" width="5" height="16" rx="1.5" opacity=".25" />
+  </g>
+  <g transform="translate(980 228)">
+    <circle class="ring" r="9" fill="none" stroke="var(--pass)" stroke-width="2" />
+    <circle class="live" r="7" fill="var(--pass)" />
+    <circle r="3" fill="var(--bg2)" />
+  </g>
+
+  <!-- the changes in flight (dots start at the front agent's edge) -->
+  <g transform="translate(176 228)">
+    <g class="dot d1"><circle r="6" fill="var(--pass)" /></g>
+    <g class="dot d2"><circle r="6" fill="var(--pass)" /></g>
+    <g class="dot d3"><circle r="6" fill="var(--pass)" /></g>
+    <g class="df"><circle r="6" stroke="var(--ink)" stroke-width="2" /></g>
+  </g>
+
+  <!-- labels -->
+  <g text-anchor="middle">
+    <text class="mono name ink" x="142" y="302">agents</text><text class="sans sub muted" x="142" y="324">write code and tests</text>
+    <text class="mono name ink" x="430" y="302">verify</text><text class="sans sub muted" x="430" y="324">tests · evals · human review</text>
+    <text class="mono name ink" x="700" y="302">control</text><text class="sans sub muted" x="700" y="324">spend cap · access · tools</text>
+    <text class="mono name ink" x="980" y="302">operate</text><text class="sans sub muted" x="980" y="324">handoffs · metrics · scale</text>
+  </g>
+</svg>
