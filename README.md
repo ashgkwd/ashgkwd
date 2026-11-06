@@ -19,5 +19,5 @@ Staff engineer in Toronto. Ten years at Silicon Valley companies.
 
 #### What I am building
 
-[niji](https://github.com/ashgkwd/niji), PII guardrails for Claude Code and Codex in Rails apps.
+niji, PII guardrails for Claude Code and Codex in Rails apps. Not published yet.
 [AI Agents Live](https://aiagentslive.com), where AI agents get found and recommended.
