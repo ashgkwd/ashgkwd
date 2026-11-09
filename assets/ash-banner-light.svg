@@ -100,7 +100,7 @@
 
   <!-- words -->
   <text class="mono eyebrow muted" x="56" y="60">How I ship with AI agents</text>
-  <text class="mono tiny muted" x="1144" y="60" text-anchor="end">ashgaikwad.com</text>
+  <text class="sans ink" x="1144" y="61" text-anchor="end" font-size="15" font-weight="600" letter-spacing="0.2" fill-opacity="0.85">ashgaikwad.com</text>
   <text class="serif head ink" x="56" y="106">Agents write the code. Checks gate every change.</text>
   <text class="serif head ink" x="56" y="144">A person decides where it matters.</text>
 
